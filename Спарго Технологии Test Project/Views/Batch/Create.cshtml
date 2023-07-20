@@ -1,0 +1,87 @@
+﻿@model Spargo_Technology_Test_Project.Models.ViewModels.BatchModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Создание партии товора</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Count" class="control-label"></label>
+                <input asp-for="Count" class="form-control" />
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span>Склад:</span>
+                <select id="selectStock" asp-for="Stock.Id">
+                    <option value="" disabled selected hidden>Пожалуйста выберите...</option>
+                </select>
+                <span asp-validation-for="Stock" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <span>Продукт:</span>
+                <select id="selectProduct" asp-for="Product.Id">
+                    <option value="" disabled selected hidden>Пожалуйста выберите...</option>
+                </select>
+                <span asp-validation-for="Product" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script type="text/javascript">
+    $(document).ready(function(e){
+        $.ajax({
+            url: "../../Stock/GetAllStocks",
+            type: "GET",
+            success: function(res){
+                var arr = JSON.parse(res);
+                var select = document.getElementById("selectStock");
+                for(var i = 0; i < arr.length;i++){
+                var el = document.createElement("option");
+        el.textContent = arr[i].Name;
+        el.value = arr[i].Id;
+        select.appendChild(el);
+                }
+            },
+            error: function(res){
+                alert(res);
+            }
+        });
+        $.ajax({
+            url: "../../Product/GetProducts",
+            type: "GET",
+            success: function(res){
+                var arr = JSON.parse(res);
+                var select = document.getElementById("selectProduct");
+                for(var i = 0; i < arr.length;i++){
+                var el = document.createElement("option");
+        el.textContent = arr[i].Name;
+        el.value = arr[i].Id;
+        select.appendChild(el);
+                }
+            },
+            error: function(res){
+                alert(res);
+            }
+        });
+    });
+</script>
+}

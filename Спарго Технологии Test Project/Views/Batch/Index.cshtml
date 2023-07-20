@@ -1,0 +1,46 @@
+﻿@model  IEnumerable<Spargo_Technology_Test_Project.Models.ViewModels.BatchModel>
+
+    @{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>Партии склада @Model.FirstOrDefault()?.Stock.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <table>
+            <tr>
+                <th>
+                    Название продукта
+                </th>                
+                <th>
+                    Количество продукта
+                </th>
+            </tr>
+        @foreach(var m in Model)
+        {
+            <tr>
+            <th>
+                @m.Product?.Name
+            </th>
+            <th>
+                @m.Count
+                </th>          
+                <th>
+                    <a onclick="return confirm('Вы уверены, что хотите удалить запись?')" asp-action="Delete" asp-route-id="@m.Id">удалить</a>
+                </th>
+            </tr>
+        }
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Stock" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

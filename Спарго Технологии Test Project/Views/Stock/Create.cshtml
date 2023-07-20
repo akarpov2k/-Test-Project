@@ -1,0 +1,59 @@
+﻿@model Spargo_Technology_Test_Project.Models.ViewModels.StockModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Создание склада</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span>Аптека:</span>
+                <select id="selectPharmacy" asp-for="Pharmacy.Id">
+                    <option value="" disabled selected hidden>Пожалуйста выберите...</option>
+                </select>
+                <span asp-validation-for="Pharmacy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function(e){
+            $.ajax({
+                url: "../../Pharmacy/GetPharmacyList",
+                type: "GET",
+                success: function(res){
+                var select = document.getElementById("selectPharmacy");
+                    var arr = JSON.parse(res);
+                    for(var i = 0; i < arr.length;i++){
+                    var el = document.createElement("option");
+            el.textContent = arr[i].Name;
+            el.value = arr[i].Id;
+            select.appendChild(el);
+                    }
+                },
+                error: function(res){
+                    alert(res);
+                }
+            });
+        });
+    </script>
+}
